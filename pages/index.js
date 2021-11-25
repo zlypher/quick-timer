@@ -65,6 +65,10 @@ export default function Home() {
   };
 
   const onCreateNewEvent = () => {
+    if (name?.trim() === "") {
+      return;
+    }
+
     setEvents([
       ...events,
       {
@@ -119,7 +123,12 @@ export default function Home() {
                 onChange={(e) => setName(e.target.value)}
               />
               <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="md" onClick={onCreateNewEvent}>
+                <Button
+                  h="1.75rem"
+                  size="md"
+                  onClick={onCreateNewEvent}
+                  disabled={name?.trim() === ""}
+                >
                   Go
                 </Button>
               </InputRightElement>
