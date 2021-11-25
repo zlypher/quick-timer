@@ -102,7 +102,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex maxW="100%" p="8" w="1024px" m="0 auto" flexDir="column">
-        <Grid mb="8" templateColumns="1fr 1fr" gap="4">
+        <Grid mb="8" templateColumns={["1fr", "1fr 1fr"]} gap="4">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -148,7 +148,7 @@ export default function Home() {
           </Text>
         </Box>
         <Box>
-          <Grid gap="4" templateColumns="1fr 1fr 1fr">
+          <Grid gap="4" templateColumns={["1fr", "1fr 1fr 1fr"]}>
             {events.map((e) => (
               <SingleEvent
                 key={e.id}
