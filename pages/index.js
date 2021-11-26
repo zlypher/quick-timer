@@ -98,6 +98,10 @@ export default function Home() {
     setEvents([...withStatus(events, "stopped")]);
   };
 
+  const onDelete = (eventToDelete) => {
+    setEvents([...events.filter((e) => e.id !== eventToDelete.id)]);
+  };
+
   return (
     <Box background="gray.50" minH="100vh">
       <Head>
@@ -157,13 +161,17 @@ export default function Home() {
           </Text>
         </Box>
         <Box>
-          <Grid gap="4" templateColumns={["1fr", "1fr 1fr 1fr"]}>
+          <Grid
+            gap="4"
+            templateColumns={"repeat( auto-fill, minmax(250px, 1fr) );"}
+          >
             {events.map((e) => (
               <SingleEvent
                 key={e.id}
                 {...e}
                 onPlay={() => onPlay(e)}
                 onStop={onStop}
+                onDelete={() => onDelete(e)}
               />
             ))}
           </Grid>
@@ -173,7 +181,15 @@ export default function Home() {
   );
 }
 
-const SingleEvent = ({ id, name, duration, status, onPlay, onStop }) => (
+const SingleEvent = ({
+  id,
+  name,
+  duration,
+  status,
+  onPlay,
+  onStop,
+  onDelete,
+}) => (
   <Flex
     shadow="md"
     p="4"
@@ -187,9 +203,9 @@ const SingleEvent = ({ id, name, duration, status, onPlay, onStop }) => (
     <Text size="md" textAlign="center" mb="4">
       {formatTime(duration)}
     </Text>
-    <Box>
+    <Flex flexWrap="wrap">
       <Button
-        size="lg"
+        size="sm"
         disabled={status === "playing"}
         onClick={onPlay}
         colorScheme="blue"
@@ -197,14 +213,24 @@ const SingleEvent = ({ id, name, duration, status, onPlay, onStop }) => (
         Play
       </Button>
       <Button
-        ml="4"
-        size="lg"
+        ml="2"
+        size="sm"
         disabled={status === "stopped"}
         onClick={onStop}
         colorScheme="blue"
       >
         Stop
       </Button>
-    </Box>
+      <Button
+        ml="auto"
+        size="sm"
+        disabled={status === "playing"}
+        onClick={onDelete}
+        colorScheme="red"
+        variant="outline"
+      >
+        Delete
+      </Button>
+    </Flex>
   </Flex>
 );
