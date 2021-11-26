@@ -4,9 +4,9 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { SingleEvent } from "./components/single-event";
-import { IEvent } from "./global.types";
-import { formatTime, withStatus } from "./utils";
+import { SingleEvent } from "../components/single-event";
+import { IEvent } from "../global.types";
+import { formatTime, withStatus } from "../utils";
 
 export default function Home() {
   const [name, setName] = useState<string>("");
