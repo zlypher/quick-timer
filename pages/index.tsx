@@ -1,32 +1,12 @@
 import { Button } from "@chakra-ui/button";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
-import { Box, Flex, Grid, Heading, Text, VStack } from "@chakra-ui/layout";
+import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-
-type EventStatus = "stopped" | "playing";
-
-interface IEvent {
-  id: number;
-  status: EventStatus;
-  name: string;
-  duration: number;
-}
-
-const withStatus = (events: IEvent[], status: EventStatus): IEvent[] => {
-  return events.map((e) => {
-    return { ...e, status };
-  });
-};
-
-const formatTime = (duration: number): string => {
-  const seconds = Math.floor((duration % 60000) / 1000);
-  const minutes = Math.floor(duration / 60000);
-  return `${minutes.toString().padStart(2, "0")}:${seconds
-    .toString()
-    .padStart(2, "0")}`;
-};
+import { SingleEvent } from "./components/single-event";
+import { IEvent } from "./global.types";
+import { formatTime, withStatus } from "./utils";
 
 export default function Home() {
   const [name, setName] = useState<string>("");
@@ -162,100 +142,26 @@ export default function Home() {
             ) : null}
           </Flex>
         </Grid>
-        <Box mb="8">
-          <Text fontSize="4xl" textAlign="center">
-            {selectedEvent.current
-              ? formatTime(selectedEvent.current.duration)
-              : "00:00"}
-          </Text>
-        </Box>
-        <Box>
-          <Grid
-            gap="4"
-            templateColumns={"repeat( auto-fill, minmax(250px, 1fr) );"}
-          >
-            {events.map((e) => (
-              <SingleEvent
-                key={e.id}
-                {...e}
-                onPlay={() => onPlay(e)}
-                onStop={onStop}
-                onDelete={() => onDelete(e)}
-              />
-            ))}
-          </Grid>
-        </Box>
+        <Text fontSize="4xl" textAlign="center" mb="8">
+          {selectedEvent.current
+            ? formatTime(selectedEvent.current.duration)
+            : "00:00"}
+        </Text>
+        <Grid
+          gap="4"
+          templateColumns={"repeat( auto-fill, minmax(250px, 1fr) );"}
+        >
+          {events.map((e) => (
+            <SingleEvent
+              key={e.id}
+              {...e}
+              onPlay={() => onPlay(e)}
+              onStop={onStop}
+              onDelete={() => onDelete(e)}
+            />
+          ))}
+        </Grid>
       </Flex>
     </Box>
   );
 }
-
-interface ISingleEventProps extends IEvent {
-  onPlay: () => void;
-  onStop: () => void;
-  onDelete: () => void;
-}
-
-const SingleEvent = ({
-  name,
-  duration,
-  status,
-  onPlay,
-  onStop,
-  onDelete,
-}: ISingleEventProps) => (
-  <Flex
-    shadow="md"
-    p="4"
-    flexDir="column"
-    background="blue.50"
-    borderRadius="4px"
-    border="2px solid"
-    borderColor={status === "playing" ? "blue.400" : "transparent"}
-  >
-    <Heading
-      as="h3"
-      textAlign="center"
-      mb="4"
-      size="lg"
-      whiteSpace="nowrap"
-      overflow="hidden"
-      textOverflow="ellipsis"
-      title={name}
-    >
-      {name}
-    </Heading>
-    <Text size="md" textAlign="center" mb="4">
-      {formatTime(duration)}
-    </Text>
-    <Flex flexWrap="wrap">
-      <Button
-        size="sm"
-        disabled={status === "playing"}
-        onClick={onPlay}
-        colorScheme="blue"
-      >
-        Play
-      </Button>
-      <Button
-        ml="2"
-        size="sm"
-        disabled={status === "stopped"}
-        onClick={onStop}
-        colorScheme="blue"
-      >
-        Stop
-      </Button>
-      <Button
-        ml="auto"
-        size="sm"
-        disabled={status === "playing"}
-        onClick={onDelete}
-        colorScheme="red"
-        variant="outline"
-      >
-        Delete
-      </Button>
-    </Flex>
-  </Flex>
-);
