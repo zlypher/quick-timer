@@ -31,7 +31,6 @@ const formatTime = (duration: number): string => {
 export default function Home() {
   const [name, setName] = useState<string>("");
   const [events, setEvents] = useState<IEvent[]>([]);
-  // const [current, setCurrent] = useState();
   const selectedEvent = useRef<IEvent>();
   selectedEvent.current = events.find((e) => e.status === "playing");
 
