@@ -6,11 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { SingleEvent } from "../components/single-event";
 import { IEvent } from "../global.types";
+import { useCustomLocalStorage } from "../hooks/use-custom-local-storage";
 import { formatTime, withStatus } from "../utils";
 
 export default function Home() {
   const [name, setName] = useState<string>("");
-  const [events, setEvents] = useState<IEvent[]>([]);
+  const [events, setEvents, setEventsWithoutStorage] = useCustomLocalStorage<
+    IEvent[]
+  >("qt-events", []);
   const selectedEvent = useRef<IEvent>();
   selectedEvent.current = events.find((e) => e.status === "playing");
 
@@ -25,7 +28,7 @@ export default function Home() {
     if (prevTimeRef != undefined && selectedEvent.current != null) {
       const delta = time - prevTimeRef.current;
 
-      setEvents((oldEvents) => {
+      setEventsWithoutStorage((oldEvents) => {
         const eIdx = oldEvents.findIndex(
           (event) => event.id === selectedEvent.current.id
         );
@@ -64,7 +67,7 @@ export default function Home() {
 
   const onPlay = (eventToPlay: IEvent) => {
     const eIdx = events.findIndex((event) => event.id === eventToPlay.id);
-    setEvents([
+    setEventsWithoutStorage([
       ...withStatus(events.slice(0, eIdx), "stopped"),
       {
         ...eventToPlay,
@@ -75,7 +78,7 @@ export default function Home() {
   };
 
   const onStop = () => {
-    setEvents([...withStatus(events, "stopped")]);
+    setEventsWithoutStorage([...withStatus(events, "stopped")]);
   };
 
   const onDelete = (eventToDelete: IEvent) => {
