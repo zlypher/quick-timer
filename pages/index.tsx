@@ -21,7 +21,6 @@ const withStatus = (events: IEvent[], status: EventStatus): IEvent[] => {
 };
 
 const formatTime = (duration: number): string => {
-  const ms = duration % 1000;
   const seconds = Math.floor((duration % 60000) / 1000);
   const minutes = Math.floor(duration / 60000);
   return `${minutes.toString().padStart(2, "0")}:${seconds
@@ -83,7 +82,7 @@ export default function Home() {
     setName("");
   };
 
-  const onPlay = (eventToPlay) => {
+  const onPlay = (eventToPlay: IEvent) => {
     const eIdx = events.findIndex((event) => event.id === eventToPlay.id);
     setEvents([
       ...withStatus(events.slice(0, eIdx), "stopped"),
@@ -99,7 +98,7 @@ export default function Home() {
     setEvents([...withStatus(events, "stopped")]);
   };
 
-  const onDelete = (eventToDelete) => {
+  const onDelete = (eventToDelete: IEvent) => {
     setEvents([...events.filter((e) => e.id !== eventToDelete.id)]);
   };
 
@@ -192,15 +191,20 @@ export default function Home() {
   );
 }
 
+interface ISingleEventProps extends IEvent {
+  onPlay: () => void;
+  onStop: () => void;
+  onDelete: () => void;
+}
+
 const SingleEvent = ({
-  id,
   name,
   duration,
   status,
   onPlay,
   onStop,
   onDelete,
-}) => (
+}: ISingleEventProps) => (
   <Flex
     shadow="md"
     p="4"
