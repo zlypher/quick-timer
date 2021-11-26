@@ -3,6 +3,7 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { Box, Flex, Grid, Heading, Text, VStack } from "@chakra-ui/layout";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 type EventStatus = "stopped" | "playing";
 
@@ -73,7 +74,7 @@ export default function Home() {
     setEvents([
       ...events,
       {
-        id: events.length + 1,
+        id: uuidv4(),
         name: name,
         status: "stopped",
         duration: 0,
