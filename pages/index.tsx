@@ -138,13 +138,29 @@ export default function Home() {
               </InputRightElement>
             </InputGroup>
           </form>
-          <Flex>
-            <Text>Current:</Text>
+          <Flex minW="0">
             {selectedEvent.current != null ? (
-              <Text>{selectedEvent.current.name}</Text>
-            ) : (
-              <Text>-</Text>
-            )}
+              <Flex
+                border="1px solid"
+                borderColor="gray.200"
+                borderRadius="md"
+                h="12"
+                alignItems="center"
+                w="100%"
+                px="4"
+                justifyContent="center"
+              >
+                <Text
+                  fontSize="xl"
+                  color="gray.600"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
+                  {selectedEvent.current.name}
+                </Text>
+              </Flex>
+            ) : null}
           </Flex>
         </Grid>
         <Box mb="8">
@@ -190,8 +206,19 @@ const SingleEvent = ({
     flexDir="column"
     background="blue.50"
     borderRadius="4px"
+    border="2px solid"
+    borderColor={status === "playing" ? "blue.400" : "transparent"}
   >
-    <Heading as="h3" textAlign="center" mb="4" size="lg">
+    <Heading
+      as="h3"
+      textAlign="center"
+      mb="4"
+      size="lg"
+      whiteSpace="nowrap"
+      overflow="hidden"
+      textOverflow="ellipsis"
+      title={name}
+    >
       {name}
     </Heading>
     <Text size="md" textAlign="center" mb="4">
