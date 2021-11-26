@@ -138,28 +138,27 @@ export default function Home() {
               </InputRightElement>
             </InputGroup>
           </form>
-          <Flex minW="0">
+          <Flex
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="md"
+            h="12"
+            alignItems="center"
+            w="100%"
+            px="4"
+            justifyContent="center"
+            minW="0"
+          >
             {selectedEvent.current != null ? (
-              <Flex
-                border="1px solid"
-                borderColor="gray.200"
-                borderRadius="md"
-                h="12"
-                alignItems="center"
-                w="100%"
-                px="4"
-                justifyContent="center"
+              <Text
+                fontSize="xl"
+                color="gray.600"
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
               >
-                <Text
-                  fontSize="xl"
-                  color="gray.600"
-                  whiteSpace="nowrap"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                >
-                  {selectedEvent.current.name}
-                </Text>
-              </Flex>
+                {selectedEvent.current.name}
+              </Text>
             ) : null}
           </Flex>
         </Grid>
